@@ -17,6 +17,9 @@ isort = "^5.10.1"
 flake8 = "^5.0.4"
 pre-commit = "^2.20.0"
 jsonpointer = "^2.3"
+lxml = "^4.9.1"
+beautifulsoup4 = "^4.11.1"
+docformatter = {extras = ["tomli"], version = "^1.5.0"}
 
 [tool.codegen]
 api-list-source = "https://open.feishu.cn/api/tools/server-side-api/list"
