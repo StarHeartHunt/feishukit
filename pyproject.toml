@@ -8,12 +8,22 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 httpx = "^0.23.0"
+jinja2 = "^3.1.2"
+pydantic = "^1.10.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 pre-commit = "^2.20.0"
+jsonpointer = "^2.3"
+
+[tool.codegen]
+api-list-source = "https://open.feishu.cn/api/tools/server-side-api/list"
+api-definition-source = "https://open.feishu.cn/api_explorer/v1/api_definition"
+client-output = "feishukit/rest/"
+api-list-output = "api_list.json"
+api-definition-output = "apis.json"
 
 [tool.black]
 line-length = 88
@@ -28,7 +38,7 @@ line_length = 88
 length_sort = true
 skip_gitignore = true
 force_sort_within_sections = true
-src_paths = ["nonebot", "tests"]
+src_paths = ["feishukit", "codegen", "tests"]
 extra_standard_library = ["typing_extensions"]
 
 [build-system]
