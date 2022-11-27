@@ -1,6 +1,5 @@
 ### Project ###
-api_list.json
-apis.json
+api*.json
 catalog.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,node,visualstudiocode,jetbrains,macos,windows,linux
