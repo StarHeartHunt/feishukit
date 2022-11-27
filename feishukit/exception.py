@@ -6,11 +6,11 @@ class FeishuException(Exception):
 
 
 class RequestError(FeishuException):
-    """Simple API request failed with unknown error"""
+    """Simple API request failed with unknown error."""
 
 
 class RequestTimeout(FeishuException):
-    """Simple API request timeout"""
+    """Simple API request timeout."""
 
     def __init__(self, request: httpx.Request):
         self.request = request
