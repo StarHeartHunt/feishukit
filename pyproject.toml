@@ -16,14 +16,13 @@ black = "^22.10.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 pre-commit = "^2.20.0"
-jsonpointer = "^2.3"
 lxml = "^4.9.1"
 beautifulsoup4 = "^4.11.1"
-docformatter = {extras = ["tomli"], version = "^1.5.0"}
 
 [tool.codegen]
 api-list-source = "https://open.feishu.cn/api/tools/server-side-api/list"
 api-definition-source = "https://open.feishu.cn/api_explorer/v1/api_definition"
+api-doc-source = "https://open.feishu.cn/api/tools/document/detail"
 client-output = "feishukit/rest/"
 api-list-output = "api_list.json"
 api-definition-output = "apis.json"

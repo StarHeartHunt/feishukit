@@ -96,21 +96,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "docformatter"
-version = "1.5.0"
-description = "Formats docstrings to follow PEP 257"
-category = "dev"
-optional = false
-python-versions = ">=3.6,<4.0"
-
-[package.dependencies]
-tomli = {version = ">=2.0.0,<3.0.0", markers = "python_version >= \"3.7\""}
-untokenize = ">=0.1.1,<0.2.0"
-
-[package.extras]
-tomli = ["tomli (<2.0.0)"]
-
-[[package]]
 name = "filelock"
 version = "3.8.0"
 description = "A platform independent file lock."
@@ -227,14 +212,6 @@ MarkupSafe = ">=2.0"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
-
-[[package]]
-name = "jsonpointer"
-version = "2.3"
-description = "Identify specific nodes in a JSON document (RFC 6901)"
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "lxml"
@@ -428,14 +405,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "untokenize"
-version = "0.1.1"
-description = "Transforms tokens into original source code (while preserving whitespace)."
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "virtualenv"
 version = "20.16.7"
 description = "Virtual Python Environment builder"
@@ -455,7 +424,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "2a73087e67eb086be890441027f63fdd5ad449aa3a22f59dc60db59c84f2625a"
+content-hash = "87922d1aea1c08bffff20b9a83335212b89e5c7b166870414888a79a257526d1"
 
 [metadata.files]
 anyio = [
@@ -509,10 +478,6 @@ distlib = [
     {file = "distlib-0.3.6-py2.py3-none-any.whl", hash = "sha256:f35c4b692542ca110de7ef0bea44d73981caeb34ca0b9b6b2e6d7790dda8f80e"},
     {file = "distlib-0.3.6.tar.gz", hash = "sha256:14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46"},
 ]
-docformatter = [
-    {file = "docformatter-1.5.0-py3-none-any.whl", hash = "sha256:ae56c64822c3184602ac83ec37650c9785e80dfec17b4eba4f49ad68815d71c0"},
-    {file = "docformatter-1.5.0.tar.gz", hash = "sha256:9dc71659d3b853c3018cd7b2ec34d5d054370128e12b79ee655498cb339cc711"},
-]
 filelock = [
     {file = "filelock-3.8.0-py3-none-any.whl", hash = "sha256:617eb4e5eedc82fc5f47b6d61e4d11cb837c56cb4544e39081099fa17ad109d4"},
     {file = "filelock-3.8.0.tar.gz", hash = "sha256:55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"},
@@ -548,10 +513,6 @@ isort = [
 jinja2 = [
     {file = "Jinja2-3.1.2-py3-none-any.whl", hash = "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"},
     {file = "Jinja2-3.1.2.tar.gz", hash = "sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"},
-]
-jsonpointer = [
-    {file = "jsonpointer-2.3-py2.py3-none-any.whl", hash = "sha256:51801e558539b4e9cd268638c078c6c5746c9ac96bc38152d443400e4f3793e9"},
-    {file = "jsonpointer-2.3.tar.gz", hash = "sha256:97cba51526c829282218feb99dab1b1e6bdf8efd1c43dc9d57be093c0d69c99a"},
 ]
 lxml = [
     {file = "lxml-4.9.1-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:98cafc618614d72b02185ac583c6f7796202062c41d2eeecdf07820bad3295ed"},
@@ -806,9 +767,6 @@ tomli = [
 typing-extensions = [
     {file = "typing_extensions-4.4.0-py3-none-any.whl", hash = "sha256:16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"},
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
-]
-untokenize = [
-    {file = "untokenize-0.1.1.tar.gz", hash = "sha256:3865dbbbb8efb4bb5eaa72f1be7f3e0be00ea8b7f125c69cbd1f5fda926f37a2"},
 ]
 virtualenv = [
     {file = "virtualenv-20.16.7-py3-none-any.whl", hash = "sha256:efd66b00386fdb7dbe4822d172303f40cd05e50e01740b19ea42425cbe653e29"},
