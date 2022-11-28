@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from pydantic import BaseModel
 
 
@@ -11,3 +9,5 @@ class Config(BaseModel):
 
     api_list_output: str
     api_definition_output: str
+
+    api_doc_source: str

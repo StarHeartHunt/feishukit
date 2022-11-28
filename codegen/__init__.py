@@ -11,6 +11,7 @@ from .log import logger
 from .config import Config
 from .source import get_source
 from .parser import parse_api_list
+from .models import APIList, APIListResponse
 from .utils import sanitize, kebab_case, snake_case, pascal_case
 
 env = Environment(loader=PackageLoader("codegen"), autoescape=select_autoescape())
@@ -39,13 +40,11 @@ def build():
     logger.info(f"Loaded config: {config!r}")
 
     logger.info("Start getting API list...")
-    api_list = get_source(httpx.URL(config.api_list_source), timeout=20)
-    api_list.data["data"]["apis"] = [
-        api for api in api_list.data["data"]["apis"] if api["meta"]["Version"] != "old"
-    ]
-
+    api_list: APIList = get_source(
+        httpx.URL(config.api_list_source), APIListResponse, timeout=20
+    ).data
     Path(config.api_list_output).write_text(
-        json.dumps(api_list.data, indent=2, ensure_ascii=False), encoding="utf-8"
+        json.dumps(api_list.dict(), indent=2, ensure_ascii=False), encoding="utf-8"
     )
     logger.info(f"Write API list to {config.api_list_output}")
 
@@ -56,6 +55,7 @@ def build():
     logger.info("Parsing api list...")
     parsed_api_list = parse_api_list(api_list, config)
     logger.info("Parsing api list done!")
+    return
 
     dict_biz_api = {biz_info.name: [] for biz_info in parsed_api_list.bizInfos}
     for api in parsed_api_list.apis:
