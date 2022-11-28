@@ -1,46 +1,52 @@
 from typing import List, Optional
 
-from pydantic import Field, BaseModel, root_validator
+from pydantic import Extra, Field, BaseModel, root_validator
 
 
-class BasicRateLimit(BaseModel):
+class BasicRateLimit(BaseModel, extra=Extra.allow):
     tier: int
 
 
-class Property(BaseModel):
+class Property(BaseModel, extra=Extra.allow):
     defaultValue: str
     description: str
     example: str
     format: str
     name: str
+    properties: Optional[List["Property"]]
     ref: str
     required: bool
     type: str
 
 
-class Body(BaseModel):
-    defaultValue: str
-    description: str
-    example: str
-    format: str
-    name: str
-    properties: Optional[List[Property]]
-    ref: str
-    required: bool
-    type: str
+Property.update_forward_refs()
 
 
-class Request(BaseModel):
+class Body(Property, extra=Extra.allow):
+    ...
+
+
+class Query(Property, extra=Extra.allow):
+    ...
+
+
+class Path(Property, extra=Extra.allow):
+    ...
+
+
+class Request(BaseModel, extra=Extra.allow):
+    body: Optional[Body]
+    query: Optional[Query]
+    path: Optional[Path]
+    contentType: str
+
+
+class Response(BaseModel, extra=Extra.allow):
     body: Optional[Body]
     contentType: str
 
 
-class Response(BaseModel):
-    body: Optional[Body]
-    contentType: str
-
-
-class Definition(BaseModel):
+class Definition(BaseModel, extra=Extra.allow):
     apiName: str
     apiPath: str
     basicRateLimit: BasicRateLimit
@@ -58,7 +64,7 @@ class Definition(BaseModel):
     version: str
 
 
-class Meta(BaseModel):
+class Meta(BaseModel, extra=Extra.allow):
     name: str = Field(..., alias="Name")
     project: str = Field(..., alias="Project")
     resource: str = Field(..., alias="Resource")
@@ -66,7 +72,7 @@ class Meta(BaseModel):
     version: str = Field(..., alias="Version")
 
 
-class Api(BaseModel):
+class Api(BaseModel, extra=Extra.allow):
     bizTag: str
     detail: str
     fullDose: bool
