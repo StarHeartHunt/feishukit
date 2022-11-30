@@ -16,6 +16,9 @@ def get_content(source: Union[httpx.URL, Path], **kwargs):
             source,
             headers={"User-Agent": "FeishuKit Codegen"},
             follow_redirects=True,
+            timeout=20,
+            # proxies="http://127.0.0.1:8888",
+            # verify=False,
             **kwargs,
         ).json()
 
