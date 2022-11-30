@@ -27,6 +27,11 @@ client-output = "feishukit/rest/"
 api-list-output = "api_list.json"
 api-definition-output = "apis.json"
 
+[tool.codegen.depth-overrides]
+# https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/get-ticket-customized-field
+"删除工单自定义字段" = { "下拉列表选项" = 2 }
+"获取工单自定义字段" = { "下拉列表选项" = 2 }
+
 [tool.black]
 line-length = 88
 target-version = ["py37", "py38", "py39", "py310"]

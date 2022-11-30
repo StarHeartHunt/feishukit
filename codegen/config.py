@@ -1,3 +1,5 @@
+from typing import Dict
+
 from pydantic import BaseModel
 
 
@@ -11,3 +13,5 @@ class Config(BaseModel):
     api_definition_output: str
 
     api_doc_source: str
+
+    depth_overrides: Dict[str, Dict[str, int]]
