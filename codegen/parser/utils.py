@@ -1,16 +1,11 @@
 import re
-import json
 import builtins
 from typing import List
 from keyword import iskeyword
 
-import httpx
 from bs4 import BeautifulSoup
 
-from . import get_config
-from ..models import API
-from ..source import get_source
-from .models import APIDocResponse
+from . import get_api, get_config
 from .consts import PARAM_REGEX_MAP, TABLE_HEADER_MAP
 
 FEISHU_TYPES = {"float", "string", "int", "boolean", "map", "file", "object", "list"}
@@ -22,14 +17,11 @@ RESERVED_WORDS = (
     "id",
 }
 
+TYPE_MAPPING = {"string": "str", "boolean": "bool"}
 
-def get_api_doc(api: API):
-    return get_source(
-        httpx.URL(get_config().api_doc_source),
-        APIDocResponse,
-        params={"fullPath": api.fullPath.replace("/document", "", 1)},
-        timeout=20,
-    ).data
+
+def remap_type(type_: str):
+    return TYPE_MAPPING.get(type_, type_)
 
 
 def fix_reserved_words(value: str) -> str:
@@ -63,7 +55,7 @@ def parse_simple_table(soup: BeautifulSoup, column_names: List[str]):
         depth: int = 0
         for index, column in enumerate(item.find_all("md-td")):
             if column_names[index] == "name":
-                depth = column.text.count("\u2003")
+                depth = column.text.count("\u2003") + column.text.count("∟")
             row[column_names[index]] = column.text.strip()
 
         row["_depth"] = depth
@@ -72,23 +64,39 @@ def parse_simple_table(soup: BeautifulSoup, column_names: List[str]):
     return rows
 
 
+def get_parent(root, depth):
+    parent = root
+    for _ in range(depth):
+        parent = parent[-1]["children"]
+
+    return parent
+
+
 def parse_simple_tree_table(soup: BeautifulSoup, column_names: List[str]):
     parsed_table = parse_simple_table(soup, column_names)
     tree_table = []
 
+    depth_state = {
+        "_depth": 0,
+        "depth": 0,
+    }
     for index in range(len(parsed_table)):
         row = parsed_table[index]
-        depth = row.pop("_depth")
+        overrides = get_config().depth_overrides
+        name = get_api().name
+        depth = overrides.get(name, {}).get(row["desc"], row.pop("_depth"))
 
-        row["name"] = row["name"].replace("∟", "").strip()
         row["children"] = []
-        if depth > 0:
-            parent = tree_table
-            for _ in range(depth):
-                parent = parent[-1]["children"]
-            parent.append(row)
-        else:
-            tree_table.append(row)
+        if depth != depth_state["depth"]:
+            if depth > depth_state["depth"]:
+                depth_state["_depth"] += 1
+            elif depth < depth_state["depth"]:
+                depth_state["_depth"] -= 1
+        depth_state["depth"] = depth
+
+        parent = get_parent(tree_table, depth_state["_depth"])
+        row["name"] = row["name"].replace("∟", "").strip()
+        parent.append(row)
 
     return tree_table
 
