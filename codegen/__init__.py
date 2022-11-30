@@ -27,7 +27,7 @@ dict_apis = {}
 
 
 def load_config() -> Config:
-    pyproject = tomli.loads(Path("./pyproject.toml").read_text())
+    pyproject = tomli.loads(Path("./pyproject.toml").read_text(encoding="utf-8"))
     config_dict: Dict[str, Any] = pyproject.get("tool", {}).get("codegen", {})
     config_dict = {
         k.replace("--", "").replace("-", "_"): v for k, v in config_dict.items()
@@ -41,7 +41,7 @@ def build():
 
     logger.info("Start getting API list...")
     api_list: APIList = get_source(
-        httpx.URL(config.api_list_source), APIListResponse, timeout=20
+        httpx.URL(config.api_list_source), APIListResponse
     ).data
     Path(config.api_list_output).write_text(
         json.dumps(api_list.dict(), indent=2, ensure_ascii=False), encoding="utf-8"
@@ -49,30 +49,29 @@ def build():
     logger.info(f"Write API list to {config.api_list_output}")
 
     client_path = Path(config.client_output)
-    shutil.rmtree(client_path)
+    # shutil.rmtree(client_path)
     client_path.mkdir(parents=True, exist_ok=True)
 
     logger.info("Parsing api list...")
-    parsed_api_list = parse_api_list(api_list, config)
+    endpoints = parse_api_list(api_list, config)
     logger.info("Parsing api list done!")
-    return
 
-    dict_biz_api = {biz_info.name: [] for biz_info in parsed_api_list.bizInfos}
-    for api in parsed_api_list.apis:
-        dict_biz_api[api.bizTag].append(api)
+    dict_biz_api = {endpoint.api.bizTag: [] for endpoint in endpoints}
+    for endpoint in endpoints:
+        dict_biz_api[endpoint.api.bizTag].append(endpoint)
 
-    for biz_name in list(dict_biz_api.keys()):
-        if len(dict_biz_api[biz_name]) == 0:
-            del dict_biz_api[biz_name]
+    for biz in list(dict_biz_api.keys()):
+        if len(dict_biz_api[biz]) == 0:
+            del dict_biz_api[biz]
 
-    for scope, apis in dict_biz_api.items():
+    for scope, endpoints in dict_biz_api.items():
         client_template = env.get_template("client/client.py.jinja")
         logger.info(f"Building endpoints for {scope}...")
         tag_path = client_path / f"{scope}.py"
         tag_path.write_text(
             client_template.render(
                 project=scope,
-                apis=apis,
+                endpoints=endpoints,
             ),
             encoding="utf-8",
         )

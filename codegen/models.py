@@ -25,6 +25,15 @@ class API(BaseModel):
     updateTime: int
     url: str
 
+    http_method: str
+    api_path: str
+
+    @root_validator(pre=True)
+    def split_url(cls, values):
+        values["http_method"], values["api_path"] = values["url"].split(":", 1)
+
+        return values
+
 
 class BizInfo(BaseModel):
     desc: str

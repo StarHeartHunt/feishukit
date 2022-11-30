@@ -1,4 +1,3 @@
-import re
 from typing import Dict
 
 PARAM_REGEX_MAP: Dict[str, str] = {
@@ -9,4 +8,4 @@ PARAM_REGEX_MAP: Dict[str, str] = {
     "response_body": r"\s*响应体\s*:::html\n(.*?):::",
 }
 
-TABLE_HEADER_MAP = {"名称": "name", "类型": "type", "描述": "desc"}
+TABLE_HEADER_MAP = {"名称": "name", "类型": "type", "描述": "desc", "必填": "required"}
